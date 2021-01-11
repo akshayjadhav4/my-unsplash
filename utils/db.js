@@ -14,3 +14,13 @@ export function createPhoto(data) {
 
   return ref;
 }
+
+export async function getPhotos() {
+  const docs = await db.collection("photos").orderBy("timestamp", "desc").get();
+  const allPhotos = [];
+  docs.forEach((doc) => {
+    allPhotos.push({ id: doc.id, ...doc.data() });
+  });
+
+  return { allPhotos };
+}
