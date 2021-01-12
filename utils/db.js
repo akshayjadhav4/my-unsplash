@@ -41,3 +41,11 @@ export async function getPhotos() {
     return { error };
   }
 }
+
+export async function removePhoto(photoId) {
+  const ref = await db
+    .collection("photos")
+    .doc(photoId)
+    .delete()
+    .catch((error) => alert("ERROR WHILE DELETING PHOTO"));
+}
