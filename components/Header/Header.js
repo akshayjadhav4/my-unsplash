@@ -2,7 +2,7 @@ import React from "react";
 import AddPhotoModal from "../AddPhotoModal/AddPhotoModal";
 import { useAuth } from "../../utils/auth";
 
-const Header = () => {
+const Header = ({ searchTerm, setSearchTerm }) => {
   const { user } = useAuth();
 
   return (
@@ -48,6 +48,9 @@ const Header = () => {
           <input
             className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none w-full text-sm text-black placeholder-gray-500 border border-gray-200 rounded-md py-2 pl-10"
             type="text"
+            name="searchTerm"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name"
           />
         </form>

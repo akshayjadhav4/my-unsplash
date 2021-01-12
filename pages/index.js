@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Head from "next/head";
 import Header from "../components/Header/Header";
 import PhotosGrid from "../components/PhotosGrid/PhotosGrid";
@@ -7,6 +8,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
   const { data } = useSWR("/api/photos", fetcher);
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="container mx-auto px-4 flex flex-col min-h-screen">
@@ -15,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* HEADER */}
-      <Header />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {/* ERROR */}
       {data?.error && (
         <div className="m-2 text-red-500 text-lg text-center">
@@ -23,7 +25,9 @@ export default function Home() {
         </div>
       )}
       {/* GRID TO SHOW POSTS */}
-      {data?.photos && <PhotosGrid data={data.photos} />}
+      {data?.photos.length > 0 && (
+        <PhotosGrid data={data.photos} searchTerm={searchTerm} />
+      )}
       {/* FOOTER */}
       <h1 className="mt-auto text-center font-semibold text-gray-400">
         {`<Akshay Jadhav(AKS) @devchallenges.io/>`}
