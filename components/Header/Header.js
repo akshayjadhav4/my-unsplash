@@ -3,7 +3,7 @@ import AddPhotoModal from "../AddPhotoModal/AddPhotoModal";
 import { useAuth } from "../../utils/auth";
 
 const Header = ({ searchTerm, setSearchTerm }) => {
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
 
   return (
     <div className="flex items-center pt-4 flex-wrap">
@@ -27,6 +27,16 @@ const Header = ({ searchTerm, setSearchTerm }) => {
             {user?.email ? user?.email : "devchallenges.io(Guest)"}
           </p>
         </div>
+        {user?.uid && (
+          <span
+            className="ml-2 cursor-pointer border border-gray-400 p-1 rounded-lg hover:bg-gray-400 hover:text-white"
+            onClick={() => {
+              signout();
+            }}
+          >
+            Sign Out
+          </span>
+        )}
       </div>
       {/* account end */}
 
