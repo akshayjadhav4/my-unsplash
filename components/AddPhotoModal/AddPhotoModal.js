@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useAuth } from "../../utils/auth";
 import Link from "next/link";
 import { createPhoto } from "../../utils/db";
+import useSWR, { mutate } from "swr";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const AddPhotoModal = () => {
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
   const [label, setLabel] = useState("");
   const [photoURL, setPhotoURL] = useState("");
+  const { data } = useSWR("/api/photos", fetcher);
 
   const addPhoto = (e) => {
     e.preventDefault();
@@ -17,7 +21,9 @@ const AddPhotoModal = () => {
         photoURL,
         author: user.uid,
       };
-      createPhoto(photo).then(({ id }) => {
+      createPhoto(photo).then((newPhoto) => {
+        let id = newPhoto.id;
+        mutate("/api/photos", { ...data, newPhoto: { id, ...newPhoto } });
         setLabel("");
         setPhotoURL("");
         setShowModal(false);
